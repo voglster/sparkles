@@ -26,6 +26,10 @@ classifiers = ["License :: OSI Approved :: MIT License"]
 test = [
     "pytest",
     "pytest-cov",
+]
+dev = [
+    "pytest-watch",
+    "tomlkit",
+    "flit-bumpversion",
     "black",
 ]
-dev = []

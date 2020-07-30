@@ -3,13 +3,13 @@
 from collections import namedtuple
 from datetime import datetime
 from functools import wraps
-from typing import List
+from typing import List, Iterable
 
 from loguru import logger
 import pytz
 import requests
 
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 
 
 def logged_user(func):
@@ -45,7 +45,7 @@ def now_utc():
     return datetime.now(pytz.utc).replace(second=0, microsecond=0, tzinfo=None)
 
 
-def add_key_from_id(data: List[dict]):
+def add_key_from_id(data: Iterable[dict]):
     for row in data:
         row["key"] = row["id"]
 
@@ -124,11 +124,3 @@ def send_to_haste_bin(message):
         import traceback
 
         return f"Failed to send to hastebin, {traceback.format_exc()}", False
-
-
-def smart_bool(val: str) -> bool:
-    if val.strip().lower() in ["true", "yes", "1"]:
-        return True
-    if val.strip().lower() in ["false", "no", "0", ""]:
-        return False
-    raise ValueError(f"Config value of {val} could not be coerced into bool")

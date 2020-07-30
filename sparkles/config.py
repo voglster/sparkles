@@ -5,6 +5,14 @@ load_dotenv()
 from os import getenv
 
 
+def smart_bool(val: str) -> bool:
+    if val.strip().lower() in ["true", "yes", "1"]:
+        return True
+    if val.strip().lower() in ["false", "no", "0", ""]:
+        return False
+    raise ValueError(f"Config value of {val} could not be coerced into bool")
+
+
 class BaseConfig:
     def __init__(self):
         for env_variable, value_class in self.__class__.__dict__[
