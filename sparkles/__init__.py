@@ -85,6 +85,13 @@ def pairwise(items):
 GpsCoords = namedtuple("GpsCoords", "lat,lon")
 
 
+def counter(start=0, step=1):
+    count = start
+    while True:
+        yield count
+        count += step
+
+
 def build_send_slack_message(prefix, slack_webhook):
     def send_slack_message(message):
         from notifiers import get_notifier

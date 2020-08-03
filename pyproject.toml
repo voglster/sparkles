@@ -21,7 +21,6 @@ description-file="README.md"
 classifiers = ["License :: OSI Approved :: MIT License"]
 
 
-
 [tool.flit.metadata.requires-extra]
 test = [
     "pytest",
