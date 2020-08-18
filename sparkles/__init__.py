@@ -1,5 +1,5 @@
 """Just utilities made by Jim Vogel"""
-
+import itertools
 from collections import namedtuple
 from datetime import datetime
 from functools import wraps
@@ -43,6 +43,15 @@ def parse_float(value: str):
 
 def now_utc():
     return datetime.now(pytz.utc).replace(second=0, microsecond=0, tzinfo=None)
+
+
+def chunked(iterable, size):
+    it = iter(iterable)
+    while True:
+        chunk = tuple(itertools.islice(it, size))
+        if not chunk:
+            break
+        yield chunk
 
 
 def add_key_from_id(data: Iterable[dict]):

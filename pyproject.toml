@@ -29,6 +29,5 @@ test = [
 dev = [
     "pytest-watch",
     "tomlkit",
-    "flit-bumpversion",
     "black",
 ]
