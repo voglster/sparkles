@@ -45,6 +45,10 @@ def now_utc():
     return datetime.now(pytz.utc).replace(second=0, microsecond=0, tzinfo=None)
 
 
+def trunc_date(dt):
+    return dt.replace(hour=0, minute=0, second=0, microsecond=0)
+
+
 def chunked(iterable, size):
     it = iter(iterable)
     while True:
