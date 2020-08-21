@@ -97,11 +97,6 @@ def quick_search(query, model, fields=None, base_raw_query=None):
     return ret
 
 
-def pairwise(items):
-    items = list(items)
-    return zip(items[:-1], items[1:])
-
-
 GpsCoords = namedtuple("GpsCoords", "lat,lon")
 
 
