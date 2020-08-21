@@ -12,6 +12,13 @@ import requests
 __version__ = "0.1.7"
 
 
+def pairwise(iterable):
+    """s -> (s0,s1), (s1,s2), (s2, s3), ..."""
+    a, b = itertools.tee(iterable)
+    next(b, None)
+    return zip(a, b)
+
+
 def logged_user(func):
     @wraps(func)
     def log(*args, **kwargs):
