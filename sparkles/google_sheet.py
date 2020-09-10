@@ -18,7 +18,10 @@ def ignored_sheets():
     return [tab_name.casefold() for tab_name in config.ignored_sheets]
 
 
-def auth(credential_file=config.google_credentials_file):
+def auth(credential_file=None):
+    if not credential_file:
+        credential_file = config.google_credentials_file
+
     from pathlib import Path
 
     credential_file = Path(__file__).parent.parent / credential_file
@@ -35,6 +38,8 @@ def auth(credential_file=config.google_credentials_file):
 def get_book(sheet_key, gc=None):
     if gc is None:
         gc = auth()
+    elif type(gc) == str:
+        gc = auth(gc)
     logging.info(f"Opening Google Sheet {sheet_key}")
     book = gc.open_by_key(sheet_key)
     logging.info(f"Google Sheet Title is {book.title}")
