@@ -32,6 +32,8 @@ def auth(credential_file=None):
     else:
         credential_file = find_file_above(credential_file)
 
+    logger.info(f"Authorizing google with credential file {credential_file}")
+
     scope = [
         "https://spreadsheets.google.com/feeds",
         "https://www.googleapis.com/auth/drive",
