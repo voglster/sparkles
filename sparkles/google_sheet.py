@@ -3,6 +3,8 @@ from gspread import WorksheetNotFound
 from loguru import logger
 from oauth2client.service_account import ServiceAccountCredentials
 import logging
+from sparkles.pathing import find_file_above
+import os
 
 
 class Config:
@@ -22,9 +24,14 @@ def auth(credential_file=None):
     if not credential_file:
         credential_file = config.google_credentials_file
 
-    from pathlib import Path
+    if os.sep in credential_file:
+        from pathlib import Path
 
-    credential_file = Path(__file__).parent.parent / credential_file
+        credential_file = Path(__file__).parent.parent / credential_file
+
+    else:
+        credential_file = find_file_above(credential_file)
+
     scope = [
         "https://spreadsheets.google.com/feeds",
         "https://www.googleapis.com/auth/drive",
