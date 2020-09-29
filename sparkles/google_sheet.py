@@ -5,6 +5,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 import logging
 from sparkles.pathing import find_file_above
 import os
+from pathlib import Path
 
 
 class Config:
@@ -20,17 +21,22 @@ def ignored_sheets():
     return [tab_name.casefold() for tab_name in config.ignored_sheets]
 
 
-def auth(credential_file=None):
-    if not credential_file:
-        credential_file = config.google_credentials_file
+def auth(original_credential_file=None):
 
-    if os.sep in credential_file:
-        from pathlib import Path
+    if not original_credential_file:
+        original_credential_file = (
+            config.google_credentials_file or "service_account.json"
+        )
 
-        credential_file = Path(__file__).parent.parent / credential_file
-
+    if os.sep in original_credential_file:
+        credential_file = Path(__file__).parent.parent / original_credential_file
     else:
-        credential_file = find_file_above(credential_file)
+        credential_file = find_file_above(original_credential_file, os.getcwd())
+
+    if not credential_file:
+        raise Exception(
+            f"Could not find a credential file {original_credential_file} above {os.getcwd()}"
+        )
 
     logger.info(f"Authorizing google with credential file {credential_file}")
 

@@ -16,7 +16,9 @@ requires = [
     "notifiers",
     "python-dotenv",
     "gspread",
-    "oauth2client"
+    "oauth2client",
+    "starlette",
+    "uvicorn"
 ]
 requires-python=">=3.5"
 description-file="README.md"
