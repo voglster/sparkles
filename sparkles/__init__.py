@@ -11,7 +11,7 @@ from loguru import logger
 import pytz
 import requests
 
-__version__ = "0.1.16"
+__version__ = "0.1.17"
 
 
 def pairwise(iterable):
