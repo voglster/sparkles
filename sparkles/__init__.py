@@ -148,3 +148,16 @@ def send_to_haste_bin(message):
         import traceback
 
         return f"Failed to send to hastebin, {traceback.format_exc()}", False
+
+
+def parse_csl(value, lower=True):
+    """
+    reads a string that is a comma separated list and converts it into a list of strings
+    stripping out white space along the way
+    :param value: the string to parse
+    :param lower: should we also lowercase everything (default true)
+    :return: a list of strings
+    """
+    if lower:
+        return [t.strip() for t in value.lower().strip().split(",")]
+    return [t.strip() for t in value.strip().split(",")]
