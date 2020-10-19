@@ -158,6 +158,9 @@ def parse_csl(value, lower=True):
     :param lower: should we also lowercase everything (default true)
     :return: a list of strings
     """
+    value = value.strip()
+    if not value:
+        return []
     if lower:
         return [t.strip() for t in value.lower().strip().split(",")]
     return [t.strip() for t in value.strip().split(",")]
