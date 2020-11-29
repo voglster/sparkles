@@ -18,7 +18,8 @@ requires = [
     "gspread",
     "oauth2client",
     "starlette",
-    "uvicorn"
+    "uvicorn",
+    "xlrd"
 ]
 requires-python=">=3.5"
 description-file="README.md"

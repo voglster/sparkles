@@ -62,6 +62,18 @@ def get_book(sheet_key, gc=None):
     return book
 
 
+def get_fast_book(sheet_key, gc=None):
+    if gc is None:
+        gc = auth()
+    elif type(gc) == str:
+        gc = auth(gc)
+    logging.info(f"Opening Google Sheet {sheet_key}")
+    from .fast_gsheet import FastGSheet
+
+    book = FastGSheet(sheet_key, gc)
+    return book
+
+
 def data_sheets(book):
     """Lists all worksheets that aren't in ignored sheets"""
     for worksheet in book:
