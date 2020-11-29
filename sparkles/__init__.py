@@ -3,22 +3,13 @@ import itertools
 from collections import namedtuple
 from datetime import datetime
 from functools import wraps
-from typing import List, Iterable
-import os
-import os.path
+from typing import Iterable
 
 from loguru import logger
 import pytz
 import requests
 
 __version__ = "0.1.17"
-
-
-def pairwise(iterable):
-    """s -> (s0,s1), (s1,s2), (s2, s3), ..."""
-    a, b = itertools.tee(iterable)
-    next(b, None)
-    return zip(a, b)
 
 
 def logged_user(func):
@@ -102,13 +93,6 @@ def quick_search(query, model, fields=None, base_raw_query=None):
 GpsCoords = namedtuple("GpsCoords", "lat,lon")
 
 
-def counter(start=0, step=1):
-    count = start
-    while True:
-        yield count
-        count += step
-
-
 def build_send_slack_message(prefix, slack_webhook):
     def send_slack_message(message):
         from notifiers import get_notifier
@@ -164,3 +148,25 @@ def parse_csl(value, lower=True):
     if lower:
         return [t.strip() for t in value.lower().strip().split(",")]
     return [t.strip() for t in value.strip().split(",")]
+
+
+def sorted_groupby(iterable, key, value=None):
+    value = value or (lambda x: x)
+    iter(iterable)
+    return (
+        (k, value(v)) for k, v in itertools.groupby(sorted(iterable, key=key), key=key)
+    )
+
+
+def counter(start=0, step=1):
+    count = start
+    while True:
+        yield count
+        count += step
+
+
+def pairwise(iterable: Iterable):
+    """s -> (s0,s1), (s1,s2), (s2, s3), ..."""
+    a, b = itertools.tee(iterable)
+    next(b, None)
+    return zip(a, b)
