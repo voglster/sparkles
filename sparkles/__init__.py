@@ -146,11 +146,17 @@ def parse_csl(value, lower=True):
     return [t.strip() for t in value.strip().split(",")]
 
 
-def sorted_groupby(iterable, key, value=None):
-    value = value or (lambda x: x)
-    iter(iterable)
+def sorted_groupby(iterable, key, value=lambda x: x):
+    """
+    just like regular pythons regular group by except it sorts for you
+    :param iterable: the thing to iterate through
+    :param key: the key to both sort and group by
+    :param value: a function to apply to the group before returning (defaults to groupby iterator)
+    :return: iterable of tuples if (key_results, grouped_values)
+    """
     return (
-        (k, value(v)) for k, v in itertools.groupby(sorted(iterable, key=key), key=key)
+        (k, value(v))
+        for k, v in itertools.groupby(sorted(iter(iterable), key=key), key=key)
     )
 
 

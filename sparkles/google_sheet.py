@@ -1,11 +1,12 @@
-import gspread
-from gspread import WorksheetNotFound
-from loguru import logger
-from oauth2client.service_account import ServiceAccountCredentials
 import logging
-from sparkles.pathing import find_file_above
 import os
 from pathlib import Path
+
+from gspread import WorksheetNotFound, authorize
+from loguru import logger
+from oauth2client.service_account import ServiceAccountCredentials
+
+from .pathing import find_file_above
 
 
 class Config:
@@ -21,13 +22,23 @@ def ignored_sheets():
     return [tab_name.casefold() for tab_name in config.ignored_sheets]
 
 
-def auth(original_credential_file=None):
+def auth(credential_file=None):
+    credential_file = credential_file or config.google_credentials_file
+    path = absolute_path_for(credential_file)
+    logger.info(f"Authorizing google with credential file {path}")
+    credentials = load_gspread_credentials(path)
+    return authorize(credentials)
 
-    if not original_credential_file:
-        original_credential_file = (
-            config.google_credentials_file or "service_account.json"
-        )
 
+def load_gspread_credentials(absolute_path):
+    scope = [
+        "https://spreadsheets.google.com/feeds",
+        "https://www.googleapis.com/auth/drive",
+    ]
+    return ServiceAccountCredentials.from_json_keyfile_name(absolute_path, scope)
+
+
+def absolute_path_for(original_credential_file):
     if os.sep in original_credential_file:
         credential_file = Path(__file__).parent.parent / original_credential_file
     else:
@@ -37,17 +48,7 @@ def auth(original_credential_file=None):
         raise Exception(
             f"Could not find a credential file {original_credential_file} above {os.getcwd()}"
         )
-
-    logger.info(f"Authorizing google with credential file {credential_file}")
-
-    scope = [
-        "https://spreadsheets.google.com/feeds",
-        "https://www.googleapis.com/auth/drive",
-    ]
-    credentials = ServiceAccountCredentials.from_json_keyfile_name(
-        credential_file, scope
-    )
-    return gspread.authorize(credentials)
+    return credential_file
 
 
 def get_book(sheet_key, gc=None):
