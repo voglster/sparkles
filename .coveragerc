@@ -1,0 +1,3 @@
+[run]
+source = ./sparkles
+command_line = -m pytest

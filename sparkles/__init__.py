@@ -9,25 +9,26 @@ from loguru import logger
 import pytz
 import requests
 
+from .mongo_tools import clean_json
+
 __version__ = "0.1.17"
 
 
-def logged_user(func):
-    @wraps(func)
-    def log(*args, **kwargs):
-        logger.info(f"{kwargs['current_user'].username} ran {func.__name__}")
-        return func(*args, **kwargs)
+def logged_user(logger=logger):
+    def logging_user_wrapper(func):
+        function_name = func.__name__
 
-    return log
+        @wraps(func)
+        def log(*args, **kwargs):
+            user = kwargs.get("current_user")
+            username = user.username if user else "Unknown User"
 
+            logger.info(f"{username} ran {function_name}")
+            return func(*args, **kwargs)
 
-def clean_json(object_query):
-    ret = [o.to_mongo().to_dict() for o in object_query]
-    for r in ret:
-        if "_id" in r:
-            r["id"] = str(r["_id"])
-            del r["_id"]
-    return ret
+        return log
+
+    return logging_user_wrapper
 
 
 def to_dicts(ds):
