@@ -5,11 +5,13 @@ from datetime import datetime
 from functools import wraps
 from typing import Iterable
 
+
 from loguru import logger
 import pytz
 import requests
 
 from .mongo_tools import clean_json
+from .data_utils import to_dicts
 
 __version__ = "0.1.17"
 
@@ -29,13 +31,6 @@ def logged_user(logger=logger):
         return log
 
     return logging_user_wrapper
-
-
-def to_dicts(ds):
-    if not ds:
-        return []
-    header = ds[0]
-    return [dict(zip(header, row)) for row in ds[1:]]
 
 
 def parse_float(value: str):
