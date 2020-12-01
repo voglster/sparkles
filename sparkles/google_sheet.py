@@ -6,7 +6,7 @@ from gspread import WorksheetNotFound, authorize
 from loguru import logger
 from oauth2client.service_account import ServiceAccountCredentials
 
-from .pathing import find_file_above
+from .file_utils import find_file_above
 
 
 class Config:

@@ -5,18 +5,18 @@ import os
 import sys
 
 
-def needs_a_commit():
+def need_to_commit():
     status_lines = get_stdout_lines(["git", "status"])
     return "nothing to commit, working tree clean" not in status_lines
 
 
 def get_commit_message():
-    args_contain_commit_message = len(sys.argv) == 1
+    args_contain_commit_message = len(sys.argv) > 1
 
     commit_message = (
-        get_commit_message_interactive()
+        get_commit_message_from_arguments()
         if args_contain_commit_message
-        else get_commit_message_from_arguments()
+        else get_commit_message_interactive()
     )
 
     return escape_quotes_for_bash(commit_message)
@@ -49,7 +49,7 @@ def publish():
 
 
 if __name__ == "__main__":
-    if needs_a_commit():
+    if need_to_commit():
         commit_changes()
     bump_version()
     publish()
