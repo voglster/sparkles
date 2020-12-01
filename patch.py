@@ -11,18 +11,18 @@ def need_to_commit():
 
 
 def get_commit_message():
-    args_contain_commit_message = len(sys.argv) > 1
+    commit_msg_in_args = len(sys.argv) > 1
 
     commit_message = (
         get_commit_message_from_arguments()
-        if args_contain_commit_message
-        else get_commit_message_interactive()
+        if commit_msg_in_args
+        else ask_user_for_commit_message()
     )
 
     return escape_quotes_for_bash(commit_message)
 
 
-def get_commit_message_interactive():
+def ask_user_for_commit_message():
     return input("Commit message? ")
 
 
@@ -34,9 +34,9 @@ def escape_quotes_for_bash(bash_line):
     return bash_line.replace("'", "'\\''")
 
 
-def commit_changes():
+def commit_changes(commit_message):
     os.system("git add .")
-    os.system(f'git commit -m "{get_commit_message()}"')
+    os.system(f'git commit -m "{commit_message}"')
 
 
 def bump_version():
@@ -50,6 +50,6 @@ def publish():
 
 if __name__ == "__main__":
     if need_to_commit():
-        commit_changes()
+        commit_changes(get_commit_message())
     bump_version()
     publish()
