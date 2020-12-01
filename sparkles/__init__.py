@@ -13,7 +13,7 @@ import requests
 from .mongo_tools import clean_json
 from .data_utils import to_dicts
 
-__version__ = "0.1.18"
+__version__ = "0.1.19"
 
 
 def logged_user(logger=logger):
