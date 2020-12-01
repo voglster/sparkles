@@ -11,3 +11,9 @@ def parse_int(value: str):
     if not float_value.is_integer():
         raise ValueError(f"{value} is not an integer")
     return int(float_value)
+
+
+def lower_string(value: str):
+    if value is None:
+        raise ValueError("Lower string called on None")
+    return value.strip().lower()
