@@ -3,8 +3,8 @@ import itertools
 from collections import namedtuple
 from datetime import datetime
 from functools import wraps
-from typing import Iterable
-
+from typing import Iterable, List
+from subprocess import check_output
 
 from loguru import logger
 import pytz
@@ -172,3 +172,7 @@ def pairwise(iterable: Iterable):
     a, b = itertools.tee(iterable)
     next(b, None)
     return zip(a, b)
+
+
+def get_stdout_lines(command: List[str]) -> List[str]:
+    return check_output(command).decode().splitlines()
