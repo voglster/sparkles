@@ -173,3 +173,7 @@ def pairwise(iterable: Iterable):
 
 def get_stdout_lines(command: List[str]) -> List[str]:
     return check_output(command).decode().splitlines()
+
+
+def lookup(iterable: Iterable, key: callable):
+    return {key(i): i for i in iterable}
