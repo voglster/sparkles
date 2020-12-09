@@ -14,7 +14,7 @@ from .mongo_tools import clean_json
 from .data_utils import to_dicts
 from .parsing import parse_float, parse_int, lower_string
 
-__version__ = "0.1.22"
+__version__ = "0.1.23"
 
 
 def logged_user(logger=logger):
