@@ -19,7 +19,7 @@ requires = [
     "oauth2client",
     "starlette",
     "uvicorn",
-    "xlrd"
+    "xlrd==1.2.0"
 ]
 requires-python=">=3.5"
 description-file="README.md"
