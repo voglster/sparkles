@@ -13,11 +13,10 @@ def need_to_commit():
 def get_commit_message():
     commit_msg_in_args = len(sys.argv) > 1
 
-    commit_message = (
-        get_commit_message_from_arguments()
-        if commit_msg_in_args
-        else ask_user_for_commit_message()
-    )
+    if commit_msg_in_args:
+        commit_message = get_commit_message_from_arguments()
+    else:
+        commit_message = ask_user_for_commit_message()
 
     return escape_quotes_for_bash(commit_message)
 
