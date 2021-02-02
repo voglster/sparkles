@@ -45,7 +45,7 @@ def absolute_path_for(original_credential_file):
         credential_file = find_file_above(original_credential_file, os.getcwd())
 
     if not credential_file:
-        raise Exception(
+        raise FileNotFoundError(
             f"Could not find a credential file {original_credential_file} above {os.getcwd()}"
         )
     return credential_file
