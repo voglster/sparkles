@@ -3,8 +3,8 @@ import os
 from pathlib import Path
 
 from gspread import WorksheetNotFound, authorize
+from google.oauth2.service_account import Credentials
 from loguru import logger
-from oauth2client.service_account import ServiceAccountCredentials
 
 from .file_utils import find_file_above
 
@@ -35,7 +35,7 @@ def load_gspread_credentials(absolute_path):
         "https://spreadsheets.google.com/feeds",
         "https://www.googleapis.com/auth/drive",
     ]
-    return ServiceAccountCredentials.from_json_keyfile_name(absolute_path, scope)
+    return Credentials.from_service_account_file(absolute_path, scopes=scope)
 
 
 def absolute_path_for(original_credential_file):

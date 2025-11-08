@@ -1,6 +1,7 @@
 from io import BytesIO
+from datetime import datetime
 
-import xlrd
+import openpyxl
 import requests
 from .google_sheet import auth
 
@@ -27,32 +28,25 @@ def get_gspread_access_token(auth):
 
 
 def parse_xls_workbook(content):
-    workbook = xlrd.open_workbook(file_contents=BytesIO(content).read())
-    return {sheet.name: list(data_rows(sheet)) for sheet in workbook.sheets()}
+    workbook = openpyxl.load_workbook(BytesIO(content), data_only=True)
+    return {sheet.title: list(data_rows(sheet)) for sheet in workbook.worksheets}
 
 
 def data_rows(sheet):
-    for row in sheet.get_rows():
-        if row[0].ctype == xlrd.XL_CELL_EMPTY:
+    for row in sheet.iter_rows(values_only=False):
+        if row[0].value is None:
             break
-        yield [parse_excel_cell(column) for column in row]
+        yield [parse_excel_cell(cell) for cell in row]
 
 
-def parse_excel_date(value):
-    return xlrd.xldate.xldate_as_datetime(value, 0).isoformat()
-
-
-parsers = {
-    xlrd.XL_CELL_BOOLEAN: lambda x: "True" if x else "False",
-    xlrd.XL_CELL_DATE: parse_excel_date,
-    xlrd.XL_CELL_NUMBER: lambda v: str(int(v) if v.is_integer() else v),
-    xlrd.XL_CELL_TEXT: lambda v: v,
-    xlrd.XL_CELL_EMPTY: lambda v: v,
-    xlrd.XL_CELL_BLANK: lambda v: v,
-    xlrd.XL_CELL_ERROR: lambda v: "",
-}
-
-
-def parse_excel_cell(column: xlrd.sheet.Cell):
-    parser = parsers[column.ctype]
-    return parser(column.value)
+def parse_excel_cell(cell):
+    value = cell.value
+    if value is None:
+        return ""
+    if isinstance(value, bool):
+        return "True" if value else "False"
+    if isinstance(value, datetime):
+        return value.isoformat()
+    if isinstance(value, (int, float)):
+        return str(int(value) if isinstance(value, float) and value.is_integer() else value)
+    return str(value)
