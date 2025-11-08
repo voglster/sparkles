@@ -28,11 +28,11 @@ uv run ruff format sparkles/
 
 ## CI/CD Setup
 
-### Setting up PyPI Publishing
+### Setting up PyPI Publishing (One-time setup)
 
 1. **Create a PyPI API token:**
    - Go to https://pypi.org/manage/account/token/
-   - Create a new API token (scope: entire account or project-specific)
+   - Create a new project-scoped token for "sparkles"
    - Copy the token (starts with `pypi-`)
 
 2. **Add token to GitHub Secrets:**
@@ -42,20 +42,33 @@ uv run ruff format sparkles/
    - Value: Paste your PyPI token
    - Click "Add secret"
 
-### How to Release a New Version
+### How to Release a New Version (Git-Ops Style)
 
-1. **Bump the version** (creates commit and tag):
-   - Go to GitHub → Actions → "Bump Version" workflow
-   - Click "Run workflow"
-   - Select bump type: `patch` (0.1.26 → 0.1.27), `minor` (0.1.26 → 0.2.0), or `major` (0.1.26 → 1.0.0)
-   - Click "Run workflow"
+Just push a tag with the bump type you want:
 
-2. **Automatic publishing:**
-   - The bump workflow will create a GitHub release
-   - The release will trigger the publish workflow
-   - Package will be automatically built and published to PyPI
+```bash
+# For a patch release (0.2.0 → 0.2.1)
+git tag release-patch
+git push origin release-patch
 
-That's it! No manual builds or uploads needed.
+# For a minor release (0.2.0 → 0.3.0)
+git tag release-minor
+git push origin release-minor
+
+# For a major release (0.2.0 → 1.0.0)
+git tag release-major
+git push origin release-major
+```
+
+**What happens automatically:**
+1. GitHub Actions detects the `release-*` tag
+2. Bumps the version in code and commits it
+3. Creates a proper version tag (e.g., `v0.2.1`)
+4. Builds the package
+5. Creates a GitHub Release with release notes
+6. Publishes to PyPI
+
+That's it! No manual builds, version edits, or uploads needed.
 
 ## Features
 
