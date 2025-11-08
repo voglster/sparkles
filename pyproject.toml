@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "sparkles"
-version = "0.2.0"
+version = "0.2.1"
 description = "Just utilities made by Jim Vogel"
 readme = "README.md"
 requires-python = ">=3.10"

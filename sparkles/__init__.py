@@ -14,7 +14,7 @@ from .data_utils import to_dicts
 from .mongo_tools import clean_json
 from .parsing import lower_string, parse_float, parse_int
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 __all__ = [
     "to_dicts",
     "clean_json",
