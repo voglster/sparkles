@@ -52,7 +52,7 @@ jobs:
 
     - name: Bump version
       run: |
-        uv tool run bump-my-version bump ${{ steps.bump_type.outputs.bump_type }} --no-tag
+        uv tool run bump-my-version bump ${{ steps.bump_type.outputs.bump_type }} --no-commit --no-tag
 
     - name: Get new version
       id: get_version
