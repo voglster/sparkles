@@ -1,4 +1,4 @@
-from typing import Dict, Any
+from typing import Any, Dict
 
 
 def replace__id_with_id(r: Dict[str, Any]):

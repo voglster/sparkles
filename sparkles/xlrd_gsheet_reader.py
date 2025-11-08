@@ -1,9 +1,8 @@
-from io import BytesIO
 from datetime import datetime
+from io import BytesIO
 
 import openpyxl
 import requests
-from .google_sheet import auth
 
 
 def google_url_from_sheet_key(sheet_key):

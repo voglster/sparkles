@@ -2,8 +2,8 @@ import logging
 import os
 from pathlib import Path
 
-from gspread import WorksheetNotFound, authorize
 from google.oauth2.service_account import Credentials
+from gspread import WorksheetNotFound, authorize
 from loguru import logger
 
 from .file_utils import find_file_above
@@ -54,7 +54,7 @@ def absolute_path_for(original_credential_file):
 def get_book(sheet_key, gc=None):
     if gc is None:
         gc = auth()
-    elif type(gc) == str:
+    elif isinstance(gc, str):
         gc = auth(gc)
     logging.info(f"Opening Google Sheet {sheet_key}")
     book = gc.open_by_key(sheet_key)
@@ -65,7 +65,7 @@ def get_book(sheet_key, gc=None):
 def get_fast_book(sheet_key, gc=None):
     if gc is None:
         gc = auth()
-    elif type(gc) == str:
+    elif isinstance(gc, str):
         gc = auth(gc)
     logging.info(f"Opening Google Sheet {sheet_key}")
     from .fast_gsheet import FastGSheet
@@ -109,7 +109,8 @@ def get_sheet(book, name):
         return book.worksheet(name)
     except WorksheetNotFound:
         logger.exception(
-            f"Tried to load a sheet named: {name} but there is not sheet named that here: {book.url}"
+            f"Tried to load a sheet named: {name} but there is not sheet named that "
+            f"here: {book.url}"
         )
         return
 

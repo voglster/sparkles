@@ -1,8 +1,8 @@
+from .data_utils import to_dicts
 from .xlrd_gsheet_reader import (
     download_sheet_from_google_docs,
     parse_xls_workbook,
 )
-from .data_utils import to_dicts
 
 
 class FastGSheet:
