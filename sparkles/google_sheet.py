@@ -1,5 +1,7 @@
+import asyncio
 import logging
 import os
+from functools import partial
 from pathlib import Path
 
 from google.oauth2.service_account import Credentials
@@ -72,6 +74,22 @@ def get_fast_book(sheet_key, gc=None):
 
     book = FastGSheet(sheet_key, gc)
     return book
+
+
+async def async_auth(credential_file=None):
+    return await asyncio.to_thread(auth, credential_file)
+
+
+async def async_get_book(sheet_key, gc=None):
+    return await asyncio.to_thread(get_book, sheet_key, gc)
+
+
+async def async_get_fast_book(sheet_key, gc=None):
+    return await asyncio.to_thread(get_fast_book, sheet_key, gc)
+
+
+async def async_data_set(sheet_key, log=lambda x: None):
+    return await asyncio.to_thread(partial(data_set, sheet_key, log))
 
 
 def data_sheets(book):
