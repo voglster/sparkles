@@ -40,6 +40,19 @@ def load_gspread_credentials(absolute_path):
     return Credentials.from_service_account_file(absolute_path, scopes=scope)
 
 
+def create_book(title, folder_id=None, gc=None):
+    """Create a new spreadsheet, optionally inside a Drive folder.
+
+    Pass a *Shared Drive* folder id to make the new file org-owned. A plain
+    service account has no personal Drive storage quota and cannot own My
+    Drive files, so ``gc.create(title)`` fails with a 403 "storage quota
+    exceeded". Creating inside a Shared Drive (the SA is a member of) makes
+    the org the owner and sidesteps the quota entirely.
+    """
+    gc = gc or auth()
+    return gc.create(title, folder_id=folder_id)
+
+
 def absolute_path_for(original_credential_file):
     if os.sep in original_credential_file:
         credential_file = Path(__file__).parent.parent / original_credential_file
